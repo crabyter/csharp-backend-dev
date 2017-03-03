@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title />
+      <Author>DESKTOP-U12G8KV</Author>
+      <Description />
+      <HelpUrl></HelpUrl>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Keywords>
+        <Keyword></Keyword>
+      </Keywords>
+      <Shortcut />
+    </Header>
+    <Snippet>
+      <References />
+      <Imports />
+      <Declarations>
+        <Literal Editable="true">
+          <ID>ActualService</ID>
+          <ToolTip>Replace with yours actual service</ToolTip>
+          <Default>ActualService</Default>
+          <Function />
+        </Literal>
+        <Literal Editable="true">
+          <ID>serviceName</ID>
+          <ToolTip>Replace with yours service name</ToolTip>
+          <Default>serviceName</Default>
+          <Function />
+        </Literal>
+        <Literal Editable="true">
+          <ID>serviceDisplayName</ID>
+          <ToolTip>Replace with yours service displayname</ToolTip>
+          <Default>serviceDisplayName</Default>
+          <Function />
+        </Literal>
+        <Literal Editable="true">
+          <ID>serviceDisplayDescription</ID>
+          <ToolTip>Replace with yours service description</ToolTip>
+          <Default>serviceDisplayDescription</Default>
+          <Function />
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp" Kind="method body" Delimiter="$"><![CDATA[
+            //TopShelf config window service
+            HostFactory.Run(serviceConfig =>
+            {
+
+                serviceConfig.Service<$ActualService$>(serviceInstance =>
+                {
+                    serviceInstance.ConstructUsing(
+                        () => new $ActualService$());
+
+                    serviceInstance.WhenStarted(
+                        execute => execute.Start());
+
+                    serviceInstance.WhenStopped(
+                        execute => execute.Stop());
+
+                    serviceInstance.WhenPaused(execute => execute.Pause());
+
+                    serviceInstance.WhenContinued(execute => execute.Continue());
+
+                    serviceInstance.WhenCustomCommandReceived(
+                        (execute, hostControl, commandNumber) =>
+                            execute.CustomCommand(commandNumber));
+
+                });
+
+                serviceConfig.EnableServiceRecovery(recoveryOption =>
+                {
+                    recoveryOption.RestartService(1);
+                    recoveryOption.RestartService(1);
+                    recoveryOption.RestartService(1);//全部改成重启服务
+                    //recoveryOption.RestartComputer(60, "PS Demo");
+                    //recoveryOption.RunProgram(5,
+                    //    @"c:\someprogram.exe");
+                });
+
+
+
+                //serviceConfig.EnablePauseAndContinue();
+
+                serviceConfig.RunAsLocalSystem();// 用本地系统帐号运行,权限很大
+
+                serviceConfig.SetServiceName("$serviceName$");
+                serviceConfig.SetDisplayName("$serviceDisplayName$");
+                serviceConfig.SetDescription("$serviceDisplayDescription$");
+
+                serviceConfig.StartAutomatically();
+            });]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
